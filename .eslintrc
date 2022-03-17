@@ -1,0 +1,10 @@
+{
+    "parser": "@babel/eslint-parser",
+    "extends": [
+        "google"
+    ],
+    "rules": {
+        // Additional, per-project rules...
+        "linebreak-style": 0
+    }
+}

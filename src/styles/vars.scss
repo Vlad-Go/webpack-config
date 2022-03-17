@@ -1,0 +1,11 @@
+$accent: #8E60D9;
+$secondary: #829CAC;
+$default: #c4c4c4;
+$text: #fff;
+
+$defaultAnimSpeed: 300ms;
+
+%verticalCenter{
+    top: 50%;
+    transform: translateY(-50%);
+  }
