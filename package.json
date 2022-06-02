@@ -6,7 +6,7 @@
   "browserslist": "last 5 versions",
   "scripts": {
     "build": "set NODE_ENV=prod&& webpack --config ./bundler-core/webpack.config.js",
-    "start": "set NODE_ENV=dev&& webpack --config ./bundler-core/webpack.config.js serve",
+    "start": "set NODE_ENV=dev&& webpack serve --config ./bundler-core/webpack.config.js ",
     "setup": "node ./bundler-core/setup.js"
   },
   "author": "I",
@@ -15,6 +15,7 @@
     "@babel/core": "^7.17.5",
     "@babel/eslint-parser": "^7.17.0",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.16.11",
     "babel-loader": "^8.2.3",
     "clean-webpack-plugin": "^4.0.0",
@@ -41,7 +42,5 @@
     "webpack": "^5.69.1",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.7.4"
-  },
-  "dependencies": {
   }
 }

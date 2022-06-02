@@ -43,6 +43,7 @@ fileStructure.forEach((struct)=>{
   }));
 });
 
+const copy = staticFiles.length ? new CopyPlugin({patterns: staticFiles}) : {apply:()=> null};
 const or = (dev, prod) => isDev ? dev : prod;
 
 module.exports = {
@@ -73,41 +74,43 @@ module.exports = {
     new CleanWebpackPlugin(),
     ...html,
     new MiniCssExtractPlugin(),
-    new CopyPlugin({patterns: staticFiles}),
+    copy,
     {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap('afterEmit', () => {
-          or(void 0, fileStructure.forEach((struct)=>{
-            struct.css.forEach((cssFile)=>{
-              const filename = p(cssFile.path).filename;
-              fs.unlink(
-                  `${pathes.src}\\${filename}.js`,
-                  ()=>{}
-              );
-              fs.unlink(
-                  `${pathes.dist}\\${filename}.js`,
-                  ()=>{}
-              );
-              fs.unlink(
-                  `${pathes.dist}\\${filename}.js.map`,
-                  ()=>{}
-              );
+          if (!isDev) {
+            fileStructure.forEach((struct)=>{
+              struct.css.forEach((cssFile)=>{
+                const filename = p(cssFile.path).filename;
+                fs.unlink(
+                    `${pathes.src}\\${filename}.js`,
+                    ()=>{}
+                );
+                fs.unlink(
+                    `${pathes.dist}\\${filename}.js`,
+                    ()=>{}
+                );
+                fs.unlink(
+                    `${pathes.dist}\\${filename}.js.map`,
+                    ()=>{}
+                );
 
-              const pathToHTML =pathes.src + p(struct.html.path).fullpath;
-              console.log(pathToHTML);
-              fs.readFile(
-                  pathToHTML,
-                  'utf-8',
-                  (_, data)=> {
-                    fs.writeFile(pathToHTML, data.replace(
-                        `<script defer="defer" src="${filename}.js"></script>`,
-                        ''
-                    ),
+                const pathToHTML =pathes.src + p(struct.html.path).fullpath;
+                console.log(pathToHTML);
+                fs.readFile(
+                    pathToHTML,
                     'utf-8',
-                    ()=>{});
-                  });
+                    (_, data)=> {
+                      fs.writeFile(pathToHTML, data.replace(
+                          `<script defer="defer" src="${filename}.js"></script>`,
+                          ''
+                      ),
+                      'utf-8',
+                      ()=>{});
+                    });
+              });
             });
-          }));
+          }
         });
       },
     },
